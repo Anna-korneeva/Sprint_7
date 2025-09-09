@@ -1,6 +1,6 @@
 import io.qameta.allure.Description;
-import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
+import io.restassured.response.Response;
 import model.OrderCreateRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,14 +9,15 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import steps.OrderSteps;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static steps.OrderSteps.orderCancel;
 import static steps.OrderSteps.orderCreate;
 
 @RunWith(Parameterized.class)
 public class OrderCreateTest extends BaseAPITest {
 
     private List<String> color;
+    private int trackNumber;
 
     public OrderCreateTest(List<String> color) {
         this.color = color;
@@ -37,10 +38,24 @@ public class OrderCreateTest extends BaseAPITest {
     public void createOrderWithDifferentColors()  {
 
         OrderCreateRequest orderCreateRequest = new OrderCreateRequest(color);
-        orderCreate(orderCreateRequest)
+        Response response = orderCreate(orderCreateRequest);
+        trackNumber = response
                 .then()
                 .statusCode(201)
-                .body("track", notNullValue());
+                .body("track", notNullValue())
+                .extract()
+                .path("track");
+    }
+    @Test
+    @DisplayName("Отмена заказа")
+
+    public void cancelOrder() {
+        if (trackNumber != 0) {
+            Response response = orderCancel(trackNumber);
+            response.then()
+                    .log().all()
+                    .statusCode(200);
+        }
 
     }
 }

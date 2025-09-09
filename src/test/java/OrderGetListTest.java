@@ -1,12 +1,10 @@
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.http.ContentType;
+
+import io.restassured.response.Response;
 import org.junit.Test;
-
-import static constants.TestData.ORDER_GET_LIST;
-
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static steps.OrderSteps.orderList;
 
 public class OrderGetListTest extends BaseAPITest {
 
@@ -14,11 +12,8 @@ public class OrderGetListTest extends BaseAPITest {
     @DisplayName("Получение списка заказов")
     @Description("Получение списка заказов, проверка наличия списка")
     public void orderGetList() {
-        given()
-                .log().all()
-                .contentType(ContentType.JSON)
-                .get(ORDER_GET_LIST)
-                .then()
+        Response response = orderList();
+        response.then()
                 .statusCode(200)
                 .body("orders", notNullValue());
     }

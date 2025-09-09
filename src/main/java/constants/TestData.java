@@ -1,6 +1,5 @@
 package constants;
 
-import org.apache.commons.lang3.RandomStringUtils;
 
 public class TestData {
     public static final String BASE_URI = "https://qa-scooter.praktikum-services.ru";
@@ -15,5 +14,6 @@ public class TestData {
     public static final String COURIER_DELETE = "/api/v1/courier/{id}"; // Удаление курьера
     public static final String ORDER_POST_CREATE = "/api/v1/orders"; // Создание заказа
     public static String ORDER_GET_LIST = "/api/v1/orders"; // Получение списка заказов
+    public static final String ORDER_CANCEL = "/api/v1/orders/cancel";
 }
 
