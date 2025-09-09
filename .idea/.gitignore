@@ -1,0 +1,10 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# IDE
+.idea/
+*.iml
+
+# Allure
+.allure/
+allure-2.15.0/
